@@ -1,0 +1,46 @@
+I. File list
+-----------
+COMBINATORIAL_STRATEGIES/min_max.c 		Partitioning of matrix A and vector b according to number of MPI ranks.
+COMBINATORIAL_STRATEGIES/matching.c		Matching+Scaling of matrix A.	
+COMBINATORIAL_STRATEGIES/spectral.c		Reordering of matrix A (spectral and weighted spectral).
+COMBINATORIAL_STRATEGIES/de_min.c 		Knapsack problem applied to the coupling blocks of matrix A.
+COMBINATORIAL_STRATEGIES/fib_heap.c		Fibonacci-heap used in knapsack implementation.
+COMBINATORIAL_STRATEGIES/list.c    		Linked list used in knapsack implementation.		
+COMMON_FILES/common.c              		Functions to input and output, some vector operations, and measurament of runtime.    	
+COMMON_FILES/matrix.c              		Functions to manipulate matrices. Ex: input, output, matrix-vector product, permutations, and others.
+PARALLEL/parallel.c               	 	Functions to parallel computations. 
+PARALLEL/pardiso.c                 		Functions that use pardiso software.
+program.c					Main funtion of the program.
+pardiso.lic 					Pardiso's license (with specific user).
+Makefile					Makefile to compile the program.
+
+II. Design
+----------
+All codes were developed in C language and can be compiled in Intel compiler.
+Library Math Kernel Library (MKL), MPI are necessary to execute the program. A Pardiso
+license is required also (you can obtain a academic license in http://www.pardiso-project.org/)
+The matrix operations as reordering, scaling and matching are performed using the HSL 
+Mathematical Software Library.
+
+
+III. How to use
+A. Compile
+make
+
+B. Example of use:
+./run.sh MATRICES/<matrix.mtx> <scaling: 0 or 1> <matching: 0 or 1> <reordering: 0, 1 or 2> <knapsack: 0 or 1> <size of coupling blocks> <number of MPI ranks> 
+<no preconditioned case: 0 or 1> <number of OpenMP threads>
+
+
+i) First example: when you don't know the vector b (b is built to get the answer vector x of Ax=b be x={1,1,...,1}). Scaling, matching, and knapnack are used. Chosen reordering
+scheme is spectral. The size of coupling blocks is 50. The number of MPI ranks is 4. Do not present the no preconditioned case. The number of OpenMP threads is 2.
+  
+./run.sh MATRICES/raefsky1.mtx 1 1 1 1 50 4 0 2
+
+ii) Second example: when you want to use the vector b value (the b data is in file <matrix.mtx>_b). Scaling, matching, knapnack, reordering are not used. The size of coupling 
+blocks is 2. The number of MPI ranks is 4. The no preconditioned case is presented. The number of OpenMP threads is 2.
+
+./run.sh MATRICES_b/raefsky1.mtx 0 0 0 0 2 4 1 2
+
+
+
